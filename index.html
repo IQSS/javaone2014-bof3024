@@ -3,144 +3,7 @@
   <head>
     <title>BOF3024 Learning Scala: A Practical Approach</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <style type="text/css">
-      @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-      @import url(http://fonts.googleapis.com/css?family=Architects+Daughter);
-      @import url(http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-      @import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-
-      body { font-family: 'Droid Serif'; }
-      h1, h2, h3 {
-        font-family: 'Yanone Kaffeesatz';
-        font-weight: normal;
-      }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-      /* Two-column layout */
-      /*
-      .left-column {
-        color: #777;
-        width: 20%;
-        height: 92%;
-        float: left;
-      }
-        .left-column h2:last-of-type, .left-column h3:last-child {
-          color: #000;
-        }
-      .right-column {
-        width: 75%;
-        float: right;
-        padding-top: 1em;
-      }
-      */
-      .bigfont {
-        font-size: 2em;
-      }
-      .regularfont {
-        font-size: .7em;
-      }
-      .btw {
-        font-size: .65em;
-        color: #444;
-      }
-  
-      .deleted {
-        text-decoration: line-through;
-      }
-
-      .bottom-remark {
-        font-size: 0.5em;
-        color: gray;
-        position: absolute;
-        bottom: 1em;
-        left: 0;
-        right: 0;
-      }
-
-      .slide-badge {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        border: 1px black solid;
-        -ms-transform: rotate(-7deg); /* IE 9 */
-        -webkit-transform: rotate(-7deg); /* Chrome, Safari, Opera */
-        transform: rotate(-7deg);
-      }
-      .slide-emph-max {
-        color: white;
-        background-color: black;
-      }
-      .slide-emph-mid {
-        background-color: #00d56b;
-      }
-      
-      .speech {
-        background-color: white;
-        border-radius: 1em 1em 1em 0.2em;
-        padding: 0.5em;
-        border: 1px black solid;
-        box-shadow: 0 2px 4px rgba(0,0,0,.5);
-        font-family: 'Architects Daughter';
-      }
-
-      /* from http://nicolasgallagher.com/pure-css-speech-bubbles/demo/ */
-      .example-obtuse {
-        position:relative;
-        padding:15px 30px;
-        margin:0;
-        color:#000;
-        background:#f3961c; /* default background for browsers without gradient support */
-        /* css3 */
-        background:-webkit-gradient(linear, 0 0, 0 100%, from(#f9d835), to(#f3961c));
-        background:-moz-linear-gradient(#f9d835, #f3961c);
-        background:-o-linear-gradient(#f9d835, #f3961c);
-        background:linear-gradient(#f9d835, #f3961c);
-        /* Using longhand to avoid inconsistencies between Safari 4 and Chrome 4 */
-        -webkit-border-top-left-radius:25px 50px;
-        -webkit-border-top-right-radius:25px 50px;
-        -webkit-border-bottom-right-radius:25px 50px;
-        -webkit-border-bottom-left-radius:25px 50px;
-        -moz-border-radius:25px / 50px;
-        border-radius:25px / 50px;
-      }
-
-      /* display of quote author (alternatively use a class on the element following the blockquote) */
-      .example-obtuse + p {margin:10px 150px 2em 0; text-align:right; font-style:italic;}
-
-      /* creates the larger triangle */
-      .example-obtuse:before {
-        content:"";
-        position:absolute;
-        bottom:-30px;
-        right:80px;
-        border-width:0 0 30px 50px;
-        border-style:solid;
-        border-color:transparent #f3961c;
-        /* reduce the damage in FF3.0 */
-        display:block;
-        width:0;
-      }
-
-      /* creates the smaller triangle */
-      .example-obtuse:after {
-        content:"";
-        position:absolute;
-        bottom:-30px;
-        right:110px;
-        border-width:0 0 30px 20px;
-        border-style:solid;
-        border-color:transparent #fff;
-        /* reduce the damage in FF3.0 */
-        display:block;
-        width:0;
-      }
-
-      blockquote {
-          margin: 1em 0px;
-      }
-
-
-
-    </style>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <textarea id="source">
@@ -149,14 +12,15 @@ class: bottom
 
 # BOF3024 - Learning Scala: A Practical Approach
 
+<img src="images/robert_treacy2.jpg" width="60" align="left" style="border:5px solid transparent" />
+Bob Treacy ([@bobtreacy](https://twitter.com/bobtreacy))  
+http://www.iq.harvard.edu/people/robert-treacy  
+<br/>
+
 <img src="images/michbarsinai.jpg" width="60" align="left" style="border:5px solid transparent" />
 Michael Bar-Sinai ([@michbarsinai](https://twitter.com/michbarsinai))  
 http://www.iq.harvard.edu/people/michael-bar-sinai  
 http://mbarsinai.com
-
-<img src="images/robert_treacy2.jpg" width="60" align="left" style="border:5px solid transparent" />
-Bob Treacy ([@bobtreacy](https://twitter.com/bobtreacy))  
-http://www.iq.harvard.edu/people/robert-treacy  
 
 .right[[![IQSS logo](images/iqss-logo.png)](http://www.iq.harvard.edu)]
 
@@ -183,73 +47,94 @@ class: bigfont
 .regularfont[
 Slides and code:
 
-https://github.com/IQSS/
+https://github.com/IQSS/javaone2014-bof5619
 ]
 
 ???
 
 Here's the agenda for this talk.
-Intro
-	Who we are; Who is in the audience. Expectations
-Why Scala?
+* Intro
+ * Who we are; Who is in the audience. Expectations
+* Why Scala?
+* Colliding Concepts
+* Tools
+* Tips
 
-Colliding Concepts
-
-Tools
-
-Tips
+We will assume you have a working knowledge of java, and are interested in Scala but not sure how to start.
+We will presents lessons we learned, so you could hit new problems
 
 ---
 
 # Why Scala
 
-Akka distributed worker template
+* Implement a project based on a template that's relatively close to the final project
+  * Such as Akka distributed worker template
+* Try some functional programming
+* Try some _postfunctional_ programming
+>  if you look at the features Scala provides, it is substantially a functional language, but... it does not force you to adopt the functional style. I think .emph[postfunctional] is a good term for that blend.
+.right[Martin Odersky, http://www.scala-lang.org/old/node/4960]
+* Learn a new and interesting language
 
 ---
-
+class: slide-emph-mid
+name:colliding-concepts
 # Colliding Concepts
 
-The object keyword - Object as “instance of class” vs scalas’ actual object
+While sharing the JVM, and Java's extensive libraries, Scala and Java are very different languages. Some words have different meanings. 
 
-main method vs. Application traits
+Intuitions created by years of working with Java can be misleading. You may end up doing as much _unlearning_ as you do _learning_.
 
-Traits vs. interfaces, ability to do multiple-ish inheritance
+It's a good thing, if you're ready for it.
 
-Tuples
+.bottom.right[
+So We've gathered a few examples.
+]
 
-case classes
+---
+layout: true
 
-apply() method
+.slide-badge.badge.badge-1[
+  Colliding<br />Concepts
+]
 
-creating objects without calling new
-
-Scala’s List vs. Java’s List
-
-Implicits
-
-val vs var, immutability bias
-
-Collection library
-	Java had minimal api (until 8), scala has maximal api
-	immutable vs mutable, same name different package
-
-Syntax:
-	Semicolon inference
-	method invocation 
-	returning values and the return keyword	
+---
+name: syntax
+#Syntax
+* Semicolon inference
+* returning values and the `return` keyword 
+* `[]` are for type parameters, `<>` are for XML literals and operators, '()' and '{}' are interchangeable.
+* Type name goes after the variable name
+  - Personal goal: stop getting confused as early as Q3 of 2041.
+* methods that return void (`def f() {...}`) vs those that return value (`def f()={...}`) 
 
 ???
 
+--- 
+# Method invocation
+
+* the `obj method param` notation (as opposed to `obj.method(param)`)
+* apply() method
+
+```scala
+class Foo(x: Int) {
+    def apply(y: Int) = {
+        x*x + y*y
+    }
+}
+
+val f = new Foo(3)
+f(4)   // returns 25
+```
+.todo[Michael: Not sure this is the best example, it includes currying which might be confusing]
 
 ---
-#The object keyword
+# Companion objects vs. `static`
+Explain the `object` keyword. Relate to class extensions (in Java, that's class annotations). Also relate to Javascript's object definition, which is pretty much the same.
 Singleton
 
 Utility methods
 
-
-Companion object
-
+```scala
 object Frontend {
   case object Ok
   case object NotOk
@@ -275,14 +160,62 @@ class Frontend extends Actor with ActorLogging {
   }
 
 }
+```
+
 ---
-#Main
+# Main
+no `static` &rarr; no `public static void main`. 
+main method vs. Application traits
+
+---
+# Object Creation
+### `apply()` is the new `new`
+creating objects without calling new
+The object keyword - Object as “instance of class” vs scalas’ actual object
+
+```
+
+---
+# List
+Scala’s List vs. Java’s List
+
+---
+layout: true
+
+---
+# Collection Library
+Java had minimal api (until 8), scala has maximal api
+immutable vs mutable, same name different package
+
+* Reference the official intro at http://docs.scala-lang.org/overviews/collections/introduction.html
+
+---
+class: slide-emph-mid
+name:new-concepts
+# New Concepts
+
+Scala introduces many concepts that are not present in Java. Often, when you look at Scala code, it's unclear where values come from, how can objects extends so many classes, and so on.
+
+This confused us too.
+
+.bottom.right[
+So We've gathered a few examples.
+]
+
+---
+layout: true
+
+.slide-badge.badge.badge-2[
+  New<br />Concepts
+]
 
 ---
 #Traits vs interfaces
 
 ---
 #Tuples
+
+Don't overuse, remember objects are really annotated tuples (what's the semantics of the `String` value at `t._2`?)
 
 ---
 # case classes
@@ -302,80 +235,94 @@ case class Param( name: String, value: Any)
 
 
 ---
-
-#apply() method
-
-class Foo(x: Int) {
-    def apply(y: Int) = {
-        x*x + y*y
-    }
-}
-
-val f = new Foo(3)
-f(4)   // returns 25
----
 #Implicits
 
 ---
-#Collections library
-scala.collection.immutable
-scala.collection.mutable
+# `val` vs. `var`
+
+* immutability bias
+* Differences
+* Throw in `def` as well?
+
+
+---
+layout: true
 
 ---
 # Tools
 
-	scala REPL
+* scala REPL
 	
-	IDEs
-		NetBeans
-		Intellij IDEA
-		Eclipse
+* IDEs
+  * NetBeans
+	* Intellij IDEA
+	* Eclipse
+  * Or, text editors such as SublimeText, Atom
 
-	ScalaDoc
+* ScalaDoc
 	
-	SBT
-???
-
-
+* SBT
 
 ---
-
 class: bigfont
-
 # Tips
 
-	Spotting a good starter project
-		Look at activator templates
-		One-offs
-		Scripts
-	
-	Resources
-		Meetups
-		Typesafe web-casts
-
-
-???
+  Spotting a good starter project
+    Look at activator templates
+    One-offs
+    Scripts
+  
+  Resources
+    Meetups
+    Typesafe web-casts
 
 ---
 
+# Don't Drink the FP Kool-Aid
 
+.todo[Michael: I think this needs to be said, but if you feel it's too strong, we can take it out.]
+
+Functional programming is great for some things, and not-so-great for others. It is somewhat hyped at the moment.
+
+Scala, a .emph[postfunctional] language, allows you to choose the approach you deem best, or just feel like trying. Don't be confused by the internets.
+
+* Mutability is OK, as long as there's no concurrent updates
+  - The locks and sync mechanisms are still there for you
+  * Object creation and clean-up may be cheap, but it's not free!
+  * Side-effects are hard to reason about formally. This is why we still have jobs.
+* Tail recursion is not the best thing since slices bread
+  * It's a way to coerce an recursive algorithm into a shape that will allow the compiler to further coerce it into a loop.
+  * Makes total sense in Lisp, ML etc. where there are no loops.
+  * You're writing in Scala. You can actually use a loop.
+    * When you do use a tail recursion, don't forget `@tailrec`.
+
+---
+# Ease Into Functional Programming
+
+.todo[show Code evolution of DataTags's markdown from java/procedural to map + fold.]
+
+
+---
 
 # Other Sessions
 
-	Scala
-	
-	IQSS
-		CON575 - Bean Validation: Practical Examples from a Real-World Java EE 7 Application
-		BOF5619 - Lean Beans (Are Made of This)
-		BOF5475 - When the PrimeFaces Bootstrap Theme Isn't Enough
+* Scala
+
+* IQSS
+	*CON575 - Bean Validation: Practical Examples from a Real-World Java EE 7 Application
+	*BOF5619 - Lean Beans (Are Made of This)
+	*BOF5475 - When the PrimeFaces Bootstrap Theme Isn't Enough
 
 ---
 class: middle center
 
 #Thanks
+Visit the IQSS data science team at http://datascience.iq.harvard.edu
 
+
+[![IQSS logo](images/iqss-logo.png)](http://www.iq.harvard.edu)
 .bottom-remark[
-Presentation created using remark.js. 
+Presentation created using remark.js.
 ]
     </textarea>
     <script src="js/remark-0.6.5.min.js" type="text/javascript">
