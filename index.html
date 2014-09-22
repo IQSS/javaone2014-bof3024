@@ -122,6 +122,7 @@ name: syntax
       scala> f _
       res9: () => Unit = <function0>
 ```
+
 ---
 #Syntax - Returning Values
 
@@ -169,6 +170,7 @@ class Foo(x: Int) {
 val f = new Foo(3)
 f(4)   // returns 25
 ```
+
 .todo[Michael: Not sure this is the best example, it includes currying which might be confusing]
 
 ---
@@ -217,7 +219,7 @@ main method vs. Application traits
 creating objects without calling new
 The object keyword - Object as “instance of class” vs scala's actual object
 
-```
+
 
 ---
 # List
@@ -264,43 +266,80 @@ Mixin-  extends keyword
 ---
 #Tuples
 
+```scala
 ( 3, "Boston",199.5)
-Tuple3()
- rank=t._1,city=t._2 Score=t._3
- Simple way to return multiple values from a method, maybe a survey result, where 
- semantic meaning is not important enough to pre-define a class to return the values
+//Tuple3(Int, java.lang.String, Double)
+rank=t._1,word=t._2 Score=t._3
+```
+ 
+ Simple way to return multiple values from a method, where semantic meaning is not 
+ important enough to pre-define a class to return the values
 Don't overuse, remember objects are really annotated tuples (what's the semantics of the `String` value at `t._2`?)
 
-Tuple22 is largest size
-1-based index as in Haskell
+Tuple22 is largest size<P/>1-based index as in Haskell
 ---
 # case classes
 Pattern matching
 
-from Work.scala --
+```scala
+object MasterWorkerProtocol {
+  // Messages from Workers
+  case class RegisterWorker(workerId: String)
+  case class WorkerRequestsWork(workerId: String)
+  case class WorkIsDone(workerId: String, workId: String, result: Any)
+  case class WorkFailed(workerId: String, workId: String)
 
-case class Work(workId: String, job: Any)
-
-case class WorkResult(workId: String, result: Any)
-
-case class MethodParam(classifierId: String, model: String, params: java.util.List[Param])
-
-case class WorkStatus(workId:String, done:Boolean)
-
-case class TaskStatus(task:Task, subtasks: Int)
-
-case class Param( name: String, value: Any)
+  // Messages to Workers
+  case object WorkIsReady
+  case class Ack(id: String)
+}
+```
 
 automatic on declaration:
 constructor parameters are vals unless explicitly declared var (no setters)
 apply method is provided
 unapply method is provided
 toString, equals, hashcode and copy are generated unless explicitly provided
+
 ---
+
+#case classes
+
+```scala
+
+  def receive = {
+    case RegisterWorker(workerId) =>
+      if (workers.contains(workerId)) {
+        workers += (workerId -> workers(workerId).copy(ref = sender))
+      } else {
+        log.debug("Worker registered: {}", workerId)
+        workers += (workerId -> WorkerState(sender, status = Idle))
+        if (pendingWork.nonEmpty)
+          sender ! WorkIsReady
+      }
+    case WorkerRequestsWork(workerId) =>
+      if (pendingWork.nonEmpty) {
+        workers.get(workerId) match {
+// ...
+            sender ! work
+        }
+      }
+    case WorkIsDone(workerId, workId, result) =>
+      workers.get(workerId) match {
+// ... 
+          sender ! MasterWorkerProtocol.Ack(workId)
+      }
+
+
+```
+
+---
+
 #Implicits
 
-implict conversion
-scope
+implict conversion<P>
+	integrating with other libraries
+	if compiler comes across a type error it will look for an appropriate conversion method
 
 implict parameters
 
@@ -336,14 +375,14 @@ layout: true
 class: bigfont
 # Tips
 
-  Spotting a good starter project
-    Look at activator templates
-    One-offs
-    Scripts
+  Spotting a good starter project<P?>
+<P/>    Look at activator templates
+<P/>    One-offs
+<P/>    Scripts
   
   Resources
-    Meetups
-    Typesafe web-casts
+<P/>    Meetups<P/>
+<P/>    Typesafe web-casts
 
 ---
 
@@ -379,9 +418,9 @@ ou deem best, or just feel like trying. Don't be confused by the internets.
 * Scala
 
 * IQSS
-	*CON575 - Bean Validation: Practical Examples from a Real-World Java EE 7 Application
-	*BOF5619 - Lean Beans (Are Made of This)
-	*BOF5475 - When the PrimeFaces Bootstrap Theme Isn't Enough
+<P/>	*CON575 - Bean Validation: Practical Examples from a Real-World Java EE 7 Application
+<P/>	*BOF5619 - Lean Beans (Are Made of This)
+<P/>	*BOF5475 - When the PrimeFaces Bootstrap Theme Isn't Enough
 
 ---
 class: middle center
