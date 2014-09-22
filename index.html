@@ -100,35 +100,56 @@ layout: true
 ---
 name: syntax
 #Syntax
-* Semicolon inference<P>
+* Semicolon inference
 	Of course all statements end with a semi-colon - doesn't mean you need to write it!
-	two statements, one li
+	two statements, one line
 	one statement, multiple lines
-		a line ending is treated as a semicolon unless:
-			1.end in a word that would not be legal at the end of a statement
-			2.next line begins with a word that cannot start a statement
-			3.line ends while inside parentheses or bracket
-* `return` keyword is often superfluous
-		in the absence of an explicit return keyword, a method will return the last value computed
-* dot-notation optional 
-	5 + 2
-	same as 5.+(2)
-* `[]` are for type parameters, `<>` are for XML literals and operators, '()' and '{}' are interchangeable.
+	a line ending is treated as a semicolon unless:
+	1. end in a word that would not be legal at the end of a statement
+	2. next line begins with a word that cannot start a statement
+	3. line ends while inside parentheses or bracket
+* Single parameter methods can be invoked using an alternative to the dot-notation:<br />
+	`5+2` is the same as `5.+(2)`
+* `[]` are for type parameters, `&lt;&gt;` are for XML literals and operators, '()' and '{}' are interchangeable.
 * Type name goes after the variable name
   - Personal goal: stop getting confused as early as Q3 of 2041.
-* methods that return void (`def f() {...}`) vs those that return value (`def f()={...}`) 
-<P>
+* Methods may be invoked by just calling them - no need for `()` after the name.
+```scala
+      scala> def f()={ println("hello") }
+      f: ()Unit
+      scala> f // prints "hello"
+      scala> f() // prints "hello"
+      scala> f _
+      res9: () => Unit = <function0>
+```
+---
+#Syntax - Returning Values
+
+All methods return values - there's no `void` return type.
+If a method has nothing to return, it can return a value of type `Unit`.
+All these samples are functionaly the same:
+
+```scala
 def add(b: Byte): Unit ={
-	sum += b
+	 sum += b
 }
-same as:
+```
+
+```scala
 def add(b: Byte) { sum += b }
 
 def checksum(): Int = {
-	return ~(sum & 0xFF) +1
+	return ~(sum &amp; 0xFF) +1
 }
-or 
-def checksum(): Int = ~(sum & 0xFF) +1
+```
+
+```scala
+def checksum(): Int = ~(sum &amp; 0xFF) +1
+```
+
+`return` keyword is often superfluous.<br/>
+In the absence of an explicit return keyword, a method will return the last value computed.
+`return` is useful as a type of `break` that returns a value.
 
 ???
 
