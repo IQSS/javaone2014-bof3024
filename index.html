@@ -47,7 +47,7 @@ class: bigfont
 .regularfont[
 Slides and code:
 
-https://github.com/IQSS/javaone2014-bof5619
+https://github.com/IQSS/javaone2014-bof3024F
 ]
 
 ???
@@ -110,6 +110,10 @@ name: syntax
 	3. line ends while inside parentheses or bracket
 * Single parameter methods can be invoked using an alternative to the dot-notation:<br />
 	`5+2` is the same as `5.+(2)`
+---
+
+#Syntax
+
 * `[]` are for type parameters, `&lt;&gt;` are for XML literals and operators, '()' and '{}' are interchangeable.
 * Type name goes after the variable name
   - Personal goal: stop getting confused as early as Q3 of 2041.
@@ -128,23 +132,21 @@ name: syntax
 
 All methods return values - there's no `void` return type.
 If a method has nothing to return, it can return a value of type `Unit`.
-All these samples are functionaly the same:
+These samples are functionaly the same:
 
 ```scala
 def add(b: Byte): Unit ={
 	 sum += b
 }
+def add(b: Byte) { sum += b }
+
 ```
 
 ```scala
-def add(b: Byte) { sum += b }
 
 def checksum(): Int = {
 	return ~(sum &amp; 0xFF) +1
 }
-```
-
-```scala
 def checksum(): Int = ~(sum &amp; 0xFF) +1
 ```
 
@@ -175,10 +177,6 @@ f(4)   // returns 25
 
 ---
 # Companion objects vs. `static`
-Explain the `object` keyword. Relate to class extensions (in Java, that's class annotations). Also relate to Javascript's object definition, which is pretty much the same.
-Singleton
-
-Utility methods
 
 ```scala
 object Frontend {
@@ -195,14 +193,7 @@ class Frontend extends Actor with ActorLogging {
     case work:Work =>
 
       implicit val timeout = Timeout(5.seconds)
-      log.info("received work: " + work + ":" + this.self)
-      (mediator ? Send("/user/master/active", work, localAffinity = false)) map {
-        case Master.Ack(_) => Ok
-          log.info("Master ok")
-      } recover { case _ => NotOk
-          log.info("Master not ok")
-      } pipeTo sender
-
+// ...
   }
 
 }
@@ -211,14 +202,39 @@ class Frontend extends Actor with ActorLogging {
 ---
 # Main
 no `static` &rarr; no `public static void main`. 
-main method vs. Application traits
+<P/>main method vs. Application traits
 
+```scala
+ def main(args: Array[String]): Unit = {
+// ...
+  }
+
+```
+
+```scala
+object myApplication extends Application {
+
+}
+
+```
 ---
 # Object Creation
 ### `apply()` is the new `new`
 creating objects without calling new
 The object keyword - Object as “instance of class” vs scala's actual object
+```scala
+class Fraction(n:Int, d: Int) {
+	...
+}
 
+object Fraction {
+   def apply(n: Int, d:Int) = new Fraction(n,d)
+}   
+
+
+val result = Fraction(3,4) * Fraction(2,5)
+
+```
 
 
 ---
@@ -231,7 +247,7 @@ layout: true
 ---
 # Collection Library
 Java had minimal api (until 8), scala has maximal api
-immutable vs mutable, same name different package
+<P/>immutable vs mutable, same name different package
 if the package is not imported or the full name is not used, default is immutable version
 
 * Reference the official intro at http://docs.scala-lang.org/overviews/collections/introduction.html
@@ -257,12 +273,44 @@ layout: true
 ]
 
 ---
+# `val` vs. `var`
+
+* val - immutable value
+* var - mutable value
+
+* immutability bias
+```scala
+  val workerId = UUID.randomUUID().toString
+  var currentWorkId: Option[String] = None
+```
+
+---
 #Traits vs interfaces
 
 Traits define signatures of supported methods, like Java interfaces, but can also provide
-default interfaces. Not quite the same as Java abstract class either
+default interfaces. 
 
 Mixin-  extends keyword
+```scala
+trait Startup {
+
+  def startBackend(joinAddressOption: Option[Address], role: String): Address = {
+//...
+    joinAddress
+  }
+```  
+```scala
+
+object Main extends Startup {
+// ...
+}
+
+
+```  
+```scala
+class Master(workTimeout: FiniteDuration) extends Actor with ActorLogging {
+
+```
 ---
 #Tuples
 
@@ -341,19 +389,13 @@ implict conversion<P>
 	integrating with other libraries
 	if compiler comes across a type error it will look for an appropriate conversion method
 
-implict parameters
+implict parameters<P/>
+	compiler will look for default values to supply with the function call
 
 implicit keyword
 
 ---
-# `val` vs. `var`
 
-* immutability bias
-* Differences
-* Throw in `def` as well?
-
-
----
 layout: true
 
 ---
