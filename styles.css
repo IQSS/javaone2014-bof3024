@@ -36,6 +36,22 @@ blockquote {
   color: #004080;
 }
 
+.modal{
+  background-color: rgba(0,0,0,.8);
+  position: absolute;
+  top:40%;
+  bottom:40%;
+  height:20%;
+  left: 1em;
+  right: 1em;
+  border-radius: 1em;
+  text-align: center;
+  color: #FFF;
+  padding: 0;
+}
+.modal pre .remark-code {
+  font-size: 1.7em;
+}
 .bottom {
   position: absolute;
   bottom: 3em;
@@ -49,7 +65,7 @@ blockquote {
   position: absolute;
   bottom: 1em;
   right: 0;
-  left: 0;
+  left: 1em;
 }
 
 .todo {

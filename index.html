@@ -74,6 +74,7 @@ We will presents lessons we learned, so you could hit new problems
 >  if you look at the features Scala provides, it is substantially a functional language, but... it does not force you to adopt the functional style. I think .emph[postfunctional] is a good term for that blend.
 .right[Martin Odersky, http://www.scala-lang.org/old/node/4960]
 * Learn a new and interesting language
+* Bend your mind in new ways.
 
 ---
 class: slide-emph-mid
@@ -126,13 +127,17 @@ name: syntax
       scala> f _
       res9: () => Unit = <function0>
 ```
+???
+* No-parameter functions may be invoked with no parens. 
+* Reference the function itself via `f _`
+* This allows better abstractions than getters, as the client code can't tell if they're calling a function or accessing a parameter.
 
 ---
 #Syntax - Returning Values
 
 All methods return values - there's no `void` return type.
 If a method has nothing to return, it can return a value of type `Unit`.
-These samples are functionaly the same:
+These samples are functionally the same:
 
 ```scala
 def add(b: Byte): Unit ={
@@ -202,7 +207,8 @@ class Frontend extends Actor with ActorLogging {
 ---
 # Main
 no `static` &rarr; no `public static void main`. 
-<P/>main method vs. Application traits
+
+main method vs. Application traits
 
 ```scala
  def main(args: Array[String]): Unit = {
@@ -221,7 +227,7 @@ object myApplication extends Application {
 # Object Creation
 ### `apply()` is the new `new`
 creating objects without calling new
-The object keyword - Object as “instance of class” vs scala's actual object
+The object keyword - Object as "instance of class" vs scala's actual object
 ```scala
 class Fraction(n:Int, d: Int) {
 	...
@@ -324,7 +330,9 @@ rank=t._1,word=t._2 Score=t._3
  important enough to pre-define a class to return the values
 Don't overuse, remember objects are really annotated tuples (what's the semantics of the `String` value at `t._2`?)
 
-Tuple22 is largest size<P/>1-based index as in Haskell
+* Tuple22 is largest size
+* 1-based index as in Haskell
+
 ---
 # case classes
 Pattern matching
@@ -385,17 +393,16 @@ toString, equals, hashcode and copy are generated unless explicitly provided
 
 #Implicits
 
-implict conversion<P>
+implict conversion<br />
 	integrating with other libraries
 	if compiler comes across a type error it will look for an appropriate conversion method
 
-implict parameters<P/>
+implict parameters<br />
 	compiler will look for default values to supply with the function call
 
 implicit keyword
 
 ---
-
 layout: true
 
 ---
@@ -417,20 +424,18 @@ layout: true
 class: bigfont
 # Tips
 
-  Spotting a good starter project<P?>
-<P/>    Look at activator templates
-<P/>    One-offs
-<P/>    Scripts
+* Spotting a good starter project
+  * Look at activator templates
+  * One-offs
+  * Scripts
   
-  Resources
-<P/>    Meetups<P/>
-<P/>    Typesafe web-casts
+Resources
+  * Meetups
+  * Typesafe web-casts
 
 ---
 
 # Don't Drink the FP Kool-Aid
-
-.todo[Michael: I think this needs to be said, but if you feel it's too strong, we can take it out.]
 
 Functional programming is great for some things, and not-so-great for others. It is somewhat hyped at the moment.
 
@@ -447,22 +452,240 @@ ou deem best, or just feel like trying. Don't be confused by the internets.
   * You're writing in Scala. You can actually use a loop.
     * When you do use a tail recursion, don't forget `@tailrec`.
 
+
+.bottom.right[
+Having said that...
+]
+???
+.todo[Michael: I think this needs to be said, but if you feel it's too strong, we can take it out.]
+
+
 ---
 # Ease Into Functional Programming
 
-.todo[show Code evolution of DataTags's markdown from java/procedural to map + fold.]
+Rewrite existing, Scala-with-Java-accent code using functional programming idioms.
 
+
+### Case study: Re-writing in Scala.
+Problem: Create a poor-man's Markdown to HTML conversion.
+
+Input: Sequence of `String`s
+
+Output: `p` and `ul` elements, according to Markdown rules.
 
 ---
+layout: true
 
+.slide-badge.badge.badge-2[
+  Code<br />Rewrite
+]
+
+---
+Initial code:
+
+```scala
+  def html1( rawStrings : Seq[String] ):String = {
+    val cleaned = mutable.Buffer[String]()
+    for ( l &lt;- rawStrings ) {
+      cleaned += l.trim
+    }
+    val curUl = mutable.Buffer[String]()
+    val html = mutable.Buffer[String]()
+    for ( l &lt;- cleaned ) {
+      if ( l.startsWith("*") ) {
+        curUl += "<li>" + l.substring(1).trim + "</li>"
+      } else {
+        if ( ! curUl.isEmpty ) {
+          html += "<ul>"+curUl.mkString + "</ul>"
+          curUl.clear
+        }
+        html += "<p>" + l + "</p>"
+      }
+    }
+    
+    if ( ! curUl.isEmpty ) {
+      html += "<ul>"+curUl.mkString + "</ul>"
+    }
+    return html.mkString
+  }
+```
+
+---
+Initial code:
+
+```scala
+  def html1( rawStrings : Seq[String] ):String = {
+*    val cleaned = mutable.Buffer[String]()
+*    for ( l &lt;- rawStrings ) {
+*      cleaned += l.trim
+*    }
+    val curUl = mutable.Buffer[String]()
+    val html = mutable.Buffer[String]()
+    for ( l &lt;- cleaned ) {
+      if ( l.startsWith("*") ) {
+        curUl += "<li>" + l.substring(1).trim + "</li>"
+      } else {
+        if ( ! curUl.isEmpty ) {
+          html += "<ul>"+curUl.mkString + "</ul>"
+          curUl.clear
+        }
+        html += "<p>" + l + "</p>"
+      }
+    }
+    
+    if ( ! curUl.isEmpty ) {
+      html += "<ul>"+curUl.mkString + "</ul>"
+    }
+*    return html.mkString
+  }
+```
+???
+
+Easy re-writes: use map (the verb, vs map-the-noun). Remove the `return` keyword.
+
+---
+Somewhat more functional:
+
+```scala
+def html2( rawStrings : Seq[String] ) = {
+*  val cleaned = rawStrings.map( _.trim )
+
+  val curUl = mutable.Buffer[String]()
+  val html = mutable.Buffer[String]()
+  for ( l <- cleaned ) {
+    if ( l.startsWith("*") ) {
+      curUl += "<li>" + l.substring(1).trim + "</li>"
+    } else {
+      if ( ! curUl.isEmpty ) {
+        html += "<ul>"+curUl.mkString + "</ul>"
+        curUl.clear
+      }
+      html += "<p>" + l + "</p>"
+    }
+  }
+  
+  if ( ! curUl.isEmpty ) {
+    html += "<ul>"+curUl.mkString + "</ul>"
+  }
+*  html.mkString
+}
+```
+???
+That was easy.
+---
+Somewhat more functional:
+
+```scala
+def html2( rawStrings : Seq[String] ) = {
+  val cleaned = rawStrings.map( _.trim )
+
+*  val curUl = mutable.Buffer[String]()
+*  val html = mutable.Buffer[String]()
+*  for ( l <- cleaned ) {
+*    if ( l.startsWith("*") ) {
+*      curUl += "<li>" + l.substring(1).trim + "</li>"
+*    } else {
+*      if ( ! curUl.isEmpty ) {
+*        html += "<ul>"+curUl.mkString + "</ul>"
+*        curUl.clear
+*      }
+*      html += "<p>" + l + "</p>"
+*    }
+*  }
+*  
+*  if ( ! curUl.isEmpty ) {
+*    html += "<ul>"+curUl.mkString + "</ul>"
+*  }
+  html.mkString
+}
+```
+???
+* It is not as clear how to convert this part. But it clearly can be done, since we're processing a list, as in LISP.
+* Can we use some `fold` variant?
+---
+Somewhat more functional:
+
+.modal[
+```
+Seq(1,2,3,4).foldLeft(0)( (p,i)=>p+i )
+// prints 10
+```
+]
+
+```scala
+def html2( rawStrings : Seq[String] ) = {
+  val cleaned = rawStrings.map( _.trim )
+
+*  val curUl = mutable.Buffer[String]()
+*  val html = mutable.Buffer[String]()
+*  for ( l <- cleaned ) {
+*    if ( l.startsWith("*") ) {
+*      curUl += "<li>" + l.substring(1).trim + "</li>"
+*    } else {
+*      if ( ! curUl.isEmpty ) {
+*        html += "<ul>"+curUl.mkString + "</ul>"
+*        curUl.clear
+*      }
+*      html += "<p>" + l + "</p>"
+*    }
+*  }
+*  
+*  if ( ! curUl.isEmpty ) {
+*    html += "<ul>"+curUl.mkString + "</ul>"
+*  }
+*  html.mkString
+}
+```
+???
+* Fold a list of items to a product.
+* Only we want to end with a List
+* So, start with `List[List[String]]`
+---
+
+Even more functional:
+
+```scala
+def html3( rawStrings : Seq[String] ) = {
+  val elements = rawStrings.map( _.trim )
+                   .map( s => if (s.startsWith("*"))
+                                {"<li>"+s.substring(1).trim+"</li>"}
+                              else
+                                {"<p>" + s + "</p>"} )
+
+  val grouped = elements.tail.foldLeft( List(List(elements.head)) )(
+                   (l,s) => { 
+                      if ( l.last.head(1) != s(1) ) 
+                          l :+ List(s)
+                      else
+                          l.dropRight(1) :+ (l.last :+ s)
+                      })
+
+  grouped.flatMap( l => if (l.head.startsWith("<li>")) 
+                          List("<ul>"+l.mkString+"</ul>")
+                        else
+                           l 
+                  ).mkString
+}
+```
+Using `foldLeft`, we create a list of lists of `String`s, and operate on them. Then, use `flatMap` to convert the result to a list of strings, and then use `mkString` to create the final string.
+
+
+.bottom-remark[Actual code included in presentation repo at GitHub.]
+
+???
+* Code looks better when not confined to a slide
+---
+layout: true
+
+---
 # Other Sessions
 
 * Scala
 
 * IQSS
-<P/>	*CON575 - Bean Validation: Practical Examples from a Real-World Java EE 7 Application
-<P/>	*BOF5619 - Lean Beans (Are Made of This)
-<P/>	*BOF5475 - When the PrimeFaces Bootstrap Theme Isn't Enough
+    * CON575 - Bean Validation: Practical Examples from a Real-World Java EE 7 Application
+    * BOF5619 - Lean Beans (Are Made of This)
+    * BOF5475 - When the PrimeFaces Bootstrap Theme Isn't Enough
 
 ---
 class: middle center
