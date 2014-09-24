@@ -101,24 +101,39 @@ layout: true
 ---
 name: syntax
 #Syntax
-* Semicolon inference
-	Of course all statements end with a semi-colon - doesn't mean you need to write it!
-	two statements, one line
-	one statement, multiple lines
-	a line ending is treated as a semicolon unless:
-	1. end in a word that would not be legal at the end of a statement
-	2. next line begins with a word that cannot start a statement
-	3. line ends while inside parentheses or bracket
-* Single parameter methods can be invoked using an alternative to the dot-notation:<br />
-	`5+2` is the same as `5.+(2)`
+### Semicolon inference
+Of course all expressions end with a semi-colon - doesn't mean you need to write it!
+* Two expressions, two lines
+  ```scala
+    print("hello, ")
+    println("world!")
+  ```
+
+* Two expressions, one line
+  ```scala
+    print("hello, "); println("world!")
+  ```
+* One expression, multiple lines:
+  a line ending is treated as a semicolon unless:
+  1. end in a word that would not be legal at the end of a expression
+  2. next line begins with a word that cannot start a expression
+  3. line ends while inside parentheses or bracket
+
 ---
 
 #Syntax
 
-* `[]` are for type parameters, `&lt;&gt;` are for XML literals and operators, '()' and '{}' are interchangeable.
-* Type name goes after the variable name
+### []s, ()s and {}s
+`[]` are for type parameters, `&lt;&gt;` are for XML literals and operators, '()' and '{}' are interchangeable.
+
+### Type name goes after the variable name
   - Personal goal: stop getting confused as early as Q3 of 2041.
-* Methods may be invoked by just calling them - no need for `()` after the name.
+
+---
+
+# Method invocation
+
+* Methods that take no parameters may be invoked by just calling them - no need for `()` after the name.
 ```scala
       scala> def f()={ println("hello") }
       f: ()Unit
@@ -127,13 +142,21 @@ name: syntax
       scala> f _
       res9: () => Unit = <function0>
 ```
+* Single parameter methods can be invoked using an alternative to the dot-notation:<br />
+  `a + b` is the same as `a.+(b)`
+* Right associative methods: When last character of method name is `:` <br />
+  `a +: b` is the same as `b.+:(a)`
+* The `apply()` method - no need to type the `apply` part.<br />
+  `f()` is really `f.apply()` or `f.apply`
+
 ???
+
 * No-parameter functions may be invoked with no parens. 
 * Reference the function itself via `f _`
 * This allows better abstractions than getters, as the client code can't tell if they're calling a function or accessing a parameter.
 
 ---
-#Syntax - Returning Values
+# The Point of No `return`
 
 All methods return values - there's no `void` return type.
 If a method has nothing to return, it can return a value of type `Unit`.
@@ -158,27 +181,8 @@ def checksum(): Int = ~(sum &amp; 0xFF) +1
 `return` keyword is often superfluous.<br/>
 In the absence of an explicit return keyword, a method will return the last value computed.
 `return` is useful as a type of `break` that returns a value.
-
 ???
-
---- 
-# Method invocation
-
-* the `obj method param` notation (as opposed to `obj.method(param)`)
-* apply() method
-
-```scala
-class Foo(x: Int) {
-    def apply(y: Int) = {
-        x*x + y*y
-    }
-}
-
-val f = new Foo(3)
-f(4)   // returns 25
-```
-
-.todo[Michael: Not sure this is the best example, it includes currying which might be confusing]
+.todo[Adjust code sample, maybe add return from inline anon func.]
 
 ---
 # Companion objects vs. `static`
@@ -227,7 +231,7 @@ object myApplication extends Application {
 # Object Creation
 ### `apply()` is the new `new`
 creating objects without calling new
-The object keyword - Object as "instance of class" vs scala's actual object
+
 ```scala
 class Fraction(n:Int, d: Int) {
 	...
@@ -244,16 +248,26 @@ val result = Fraction(3,4) * Fraction(2,5)
 
 
 ---
-# List
-Scala’s List vs. Java’s List
+# What Do Mean By `List`?
+
+## Java's `List`
+Ordered collection of elements. 
+
+## Scala's `List`
+The classic linked list from CS 101 / intro to functional programming (with some extras thrown in, and without the annoying TA).
+
+<br />
+<br />
+<br />
+.center.emph[When you want a Java type of `List`, use Scala's `Seq` or `Buffer`]
 
 ---
 layout: true
 
 ---
 # Collection Library
-Java had minimal api (until 8), scala has maximal api
-<P/>immutable vs mutable, same name different package
+Java had minimal api (until 8), scala has maximal api <br />
+immutable vs mutable, same name different package
 if the package is not imported or the full name is not used, default is immutable version
 
 * Reference the official intro at http://docs.scala-lang.org/overviews/collections/introduction.html
@@ -608,7 +622,7 @@ Somewhat more functional:
 .modal[
 ```
 Seq(1,2,3,4).foldLeft(0)( (p,i)=>p+i )
-// prints 10
+// yields 10
 ```
 ]
 

@@ -9,7 +9,13 @@ h1 {
   text-shadow: 0 2px 2px rgba(0,0,0,0.25);
 }
 
-.remark-code, .remark-inline-code { font-family: Menlo, Monaco, "Source code Pro", Courier, monospace; }
+.remark-code, .remark-inline-code { 
+  font-family: Menlo, Monaco, "Source code Pro", Courier, monospace;
+}
+
+.remark-inline-code {
+  background-color: #EEE;
+}
 
 blockquote {
     margin: 1em 0px;
