@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
   <head>
     <title>BOF3024 Learning Scala: A Practical Approach</title>
@@ -38,11 +37,12 @@ class: bigfont
 
 # Agenda
 
-1. Intro
-2. Why Scala?
-3. Colliding Concepts
-4. Tools
-5. Tips
+1. Why Scala?
+1. Colliding Concepts
+1. New Concepts
+1. Tools
+1. Tips (or, learn Scala while keeping your job)
+  * Including a case study
 
 .regularfont[
 Slides and code:
@@ -57,8 +57,9 @@ Here's the agenda for this talk.
  * Who we are; Who is in the audience. Expectations
 * Why Scala?
 * Colliding Concepts
+* New Concepts
 * Tools
-* Tips
+* Tips (or, learn Scala while keeping your job)
 
 We will assume you have a working knowledge of java, and are interested in Scala but not sure how to start.
 We will presents lessons we learned, so you could hit new problems
@@ -69,12 +70,16 @@ We will presents lessons we learned, so you could hit new problems
 
 * Implement a project based on a template that's relatively close to the final project
   * Such as Akka distributed worker template
+* Create a web application using Play!
+  - has a Java flavor as well, but template engine uses Scala only
 * Try some functional programming
+  - Scala may not be your best choice
 * Try some _postfunctional_ programming
->  if you look at the features Scala provides, it is substantially a functional language, but... it does not force you to adopt the functional style. I think .emph[postfunctional] is a good term for that blend.
+>  If you look at the features Scala provides, it is substantially a functional language, but... it does not force you to adopt the functional style. I think .emph[postfunctional] is a good term for that blend.
 .right[Martin Odersky, http://www.scala-lang.org/old/node/4960]
-* Learn a new and interesting language
-* Bend your mind in new ways.
+* Everyone's favorite reasons:
+  * Learn a new and interesting language
+  * Bend your mind in new ways.
 
 ---
 class: slide-emph-mid
@@ -90,6 +95,10 @@ It's a good thing, if you're ready for it.
 .bottom.right[
 So We've gathered a few examples.
 ]
+
+???
+
+Right. So you decided to actually start using scala (took me about 8 years, long story). Here are the confusing parts coming from Java. 
 
 ---
 layout: true
@@ -115,22 +124,42 @@ Of course all expressions end with a semi-colon - doesn't mean you need to write
   ```
 * One expression, multiple lines:
   a line ending is treated as a semicolon unless:
-  1. end in a word that would not be legal at the end of a expression
-  2. next line begins with a word that cannot start a expression
-  3. line ends while inside parentheses or bracket
+  1. End in a word that would not be legal at the end of a expression
+  2. Next line begins with a word that cannot start a expression
+  3. Line ends while inside parentheses or bracket
 
 ---
 
 #Syntax
 
 ### []s, ()s and {}s
-`[]` are for type parameters, `&lt;&gt;` are for XML literals and operators, '()' and '{}' are interchangeable.
+`[]` are for type parameters, `&lt;&gt;` are for XML literals and operators, `()` and `{}` are interchangeable.
 
 ### Type name goes after the variable name
-  - Personal goal: stop getting confused as early as Q3 of 2041.
+When needed - Often Scala can infer the type for you (yay!)
+
+.column.column-right[
+Scala:
+```scala
+  myString: String
+```]
+.column.column-left[
+Java:
+```java
+String myString;
+```
+]
+.column-clear[
+Personal goal: stop getting confused as early as Q3 of 2041.
+]
 
 ---
+# Constructors
 
+* Primary Constructors
+* Auxiliary Constructors 
+
+---
 # Method invocation
 
 * Methods that take no parameters may be invoked by just calling them - no need for `()` after the name.
@@ -147,7 +176,7 @@ Of course all expressions end with a semi-colon - doesn't mean you need to write
 * Right associative methods: When last character of method name is `:` <br />
   `a +: b` is the same as `b.+:(a)`
 * The `apply()` method - no need to type the `apply` part.<br />
-  `f()` is really `f.apply()` or `f.apply`
+  `f()` is really `f.apply` which is really `f.apply()`
 
 ???
 
@@ -158,13 +187,78 @@ Of course all expressions end with a semi-colon - doesn't mean you need to write
 ---
 # The Point of No `return`
 
-All methods return values - there's no `void` return type.
-If a method has nothing to return, it can return a value of type `Unit`.
+All methods return values - there's no `void` return type. Thus, the `return` keyword is often superfluous.
+
+In the absence of an explicit return keyword, a method will return the last value computed.
+
+`return` is useful as a type of `break` that returns a value.
+
 These samples are functionally the same:
 
 ```scala
+class SumWithInt {
+  var sum = 0
+  def add(b: Int):Int={
+    sum += b
+    return sum
+  }
+  def add1( i:Int )={
+    sum += i
+    sum
+  }
+}
+```
+.bottom-remark[Code: Returns.scala at presentation repo]
+
+---
+# `void` Left, Leaving a void
+
+All methods return values - there's no `void` return type. Thus, declaring a method to be `void` is impossible.
+
+If a method has nothing to return, it should return the only value of type `Unit`, marked as `()`. 
+
+These samples are functionally the same:
+
+```scala
+class SumWithUnit {
+  var sum = 0
+  def add(b: Int): Unit ={
+     sum += b
+     return ()
+  }
+  def add1( i:Int ) {
+    sum += i
+    ()
+  }
+  def add2( i:Int ) = {
+    sum += i
+  }
+  def add3( i:Int ) = sum += i
+}
+```
+.bottom-remark[Code: Returns.scala at presentation repo]
+???
+
+Go from verbose to succinct. Note that `+=` yields `()` so `add2` and `add3` work.
+
+Ways of returning unit:
+* No `=`
+* Explicitly
+* Declare method to be of type unit
+
+Unit is a type that only has a single value, `()`. Thus, there's no point looking into what that value is (unlike instances of `Int`). 
+* Q: So what's the difference from return type `void`?
+  * A: Returning a Unit makes it an expression rather than a statement. There are no statements in Scala - everything returns a value. That's FP.
+* Q (if time): What should be the return type of `System.exit`?
+  * A: Sound of a one hand clapping, I guess. It does not return.
+
+---
+
+.todo[Michael: Unsure where this goes]
+
+```scala
 def add(b: Byte): Unit ={
-	 sum += b
+   sum += b
 }
 def add(b: Byte) { sum += b }
 
@@ -173,16 +267,10 @@ def add(b: Byte) { sum += b }
 ```scala
 
 def checksum(): Int = {
-	return ~(sum &amp; 0xFF) +1
+  return ~(sum &amp; 0xFF) +1
 }
 def checksum(): Int = ~(sum &amp; 0xFF) +1
 ```
-
-`return` keyword is often superfluous.<br/>
-In the absence of an explicit return keyword, a method will return the last value computed.
-`return` is useful as a type of `break` that returns a value.
-???
-.todo[Adjust code sample, maybe add return from inline anon func.]
 
 ---
 # Companion objects vs. `static`
@@ -209,6 +297,25 @@ class Frontend extends Actor with ActorLogging {
 ```
 
 ---
+# Object Creation <sup>the sequel</sup>
+### `apply()` is the new `new`
+creating objects without calling new
+
+```scala
+class Fraction(n:Int, d: Int) {
+       ...
+}
+
+object Fraction {
+   def apply(n: Int, d:Int) = new Fraction(n,d)
+}
+
+
+val result = Fraction(3,4) * Fraction(2,5)
+
+```
+
+---
 # Main
 no `static` &rarr; no `public static void main`. 
 
@@ -225,24 +332,6 @@ main method vs. Application traits
 object myApplication extends Application {
 
 }
-
-```
----
-# Object Creation
-### `apply()` is the new `new`
-creating objects without calling new
-
-```scala
-class Fraction(n:Int, d: Int) {
-	...
-}
-
-object Fraction {
-   def apply(n: Int, d:Int) = new Fraction(n,d)
-}   
-
-
-val result = Fraction(3,4) * Fraction(2,5)
 
 ```
 
@@ -270,7 +359,9 @@ Java had minimal api (until 8), scala has maximal api <br />
 immutable vs mutable, same name different package
 if the package is not imported or the full name is not used, default is immutable version
 
-* Reference the official intro at http://docs.scala-lang.org/overviews/collections/introduction.html
+Reference the official intro at http://docs.scala-lang.org/overviews/collections/introduction.html
+
+* I tried not reading it and reading it. Reading it is better.
 
 ---
 class: slide-emph-mid
@@ -446,21 +537,22 @@ class: bigfont
 Resources
   * Meetups
   * Typesafe web-casts
+  * Books
+    - Scala for the impatient // 1 chapter per lunch, and you're done in 22 business days.
 
 ---
 
-# Don't Drink the FP Kool-Aid
+# Don't Believe Everything You Hear About FP
 
 Functional programming is great for some things, and not-so-great for others. It is somewhat hyped at the moment.
 
-Scala, a .emph[postfunctional] language, allows you to choose the approach y
-ou deem best, or just feel like trying. Don't be confused by the internets.
+Scala, a .emph[postfunctional] language, allows you to choose the approach you deem best, or just feel like trying. Don't be confused by the internets.
 
 * Mutability is OK, as long as there's no concurrent updates
-  - The locks and sync mechanisms are still there for you
+  * `java.util.concurrent` is still there for you
   * Object creation and clean-up may be cheap, but it's not free!
   * Side-effects are hard to reason about formally. This is why we still have jobs.
-* Tail recursion is not the best thing since slices bread
+* Tail recursion is not the best thing since sliced bread
   * It's a way to coerce an recursive algorithm into a shape that will allow the compiler to further coerce it into a loop.
   * Makes total sense in Lisp, ML etc. where there are no loops.
   * You're writing in Scala. You can actually use a loop.
@@ -477,15 +569,16 @@ Having said that...
 ---
 # Ease Into Functional Programming
 
-Rewrite existing, Scala-with-Java-accent code using functional programming idioms.
+At your leisure, consider re-writing existing, "Scala-with-Java-accent" code using functional programming idioms.
 
 
-### Case study: Re-writing in Scala.
-Problem: Create a poor-man's Markdown to HTML conversion.
+### Case study: Re-writing in Scala
+**Problem:** Create a poor-man's Markdown to HTML conversion, supporting `<p>`s and single level `<ul>`s.
 
-Input: Sequence of `String`s
+**Input:** Sequence of `String`s in markdown syntax
+  > Lines starting with `*` should become `<li>`s, grouped and nested in a `<ul>` element.
 
-Output: `p` and `ul` elements, according to Markdown rules.
+**Output:** Sequence of `<p>` and `<ul>` elements, according to Markdown rules.
 
 ---
 layout: true
@@ -524,6 +617,7 @@ Initial code:
   }
 ```
 
+.bottom-remark[Code: Rewrite.scala in presentation repo]
 ---
 Initial code:
 
@@ -651,6 +745,7 @@ def html2( rawStrings : Seq[String] ) = {
 }
 ```
 ???
+* With intern, when you're not under pressure to be productive, you can actually get stuff done.
 * Fold a list of items to a product.
 * Only we want to end with a List
 * So, start with `List[List[String]]`
@@ -671,14 +766,12 @@ def html3( rawStrings : Seq[String] ) = {
                       if ( l.last.head(1) != s(1) ) 
                           l :+ List(s)
                       else
-                          l.dropRight(1) :+ (l.last :+ s)
-                      })
+                          l.dropRight(1) :+ (l.last :+ s)})
 
   grouped.flatMap( l => if (l.head.startsWith("<li>")) 
                           List("<ul>"+l.mkString+"</ul>")
                         else
-                           l 
-                  ).mkString
+                           l ).mkString
 }
 ```
 Using `foldLeft`, we create a list of lists of `String`s, and operate on them. Then, use `flatMap` to convert the result to a list of strings, and then use `mkString` to create the final string.
@@ -688,6 +781,9 @@ Using `foldLeft`, we create a list of lists of `String`s, and operate on them. T
 
 ???
 * Code looks better when not confined to a slide
+* Fold takes a `sequence[type]` and returns an instance of that type. In order to end up with a sequence, we need to operate on a sequence of sequences.
+* Is this more readable? More performant? More intuitive?
+  - Dunno, but it was a fun experience and I'm happy I did it.
 ---
 layout: true
 
@@ -697,9 +793,12 @@ layout: true
 * Scala
 
 * IQSS
-    * CON575 - Bean Validation: Practical Examples from a Real-World Java EE 7 Application
-    * BOF5619 - Lean Beans (Are Made of This)
-    * BOF5475 - When the PrimeFaces Bootstrap Theme Isn't Enough
+  * .emph[BOF5619 - Lean Beans (Are Made of This)]
+  * .emph[BOF5475 When The PrimeFaces Bootstrap Theme Isn’t Enough]<br/>
+    Tuesday, Sep 30, 9:00 PM - 9:45 PM - Hilton - Plaza A
+  * .emph[CON5575 Bean Validation: Practical Examples from a Real World Java EE7 Application]<br />
+  Tuesday, Sep 30, 4:00 PM - 5:00 PM - Parc 55 - Cyril Magnin I
+
 
 ---
 class: middle center
