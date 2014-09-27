@@ -80,6 +80,44 @@ blockquote {
   font-family: fantasy;
 }
 
+.arrow {
+  background-color: #fd8d31;
+  position: absolute;
+  height: 32px;
+  line-height: 32px;
+  text-align: right;
+  padding-right: 0.3em;
+  display: block;
+  width: 360px;
+  bottom: 2em;
+  right: 2em;
+}
+.arrow:before{
+  width:0;
+  height:0;
+  content: '';
+  display:block;
+  border-top: 16px solid #fd8d31;
+  border-bottom: 16px solid #fd8d31;
+  border-left: 16px solid rgba(0,0,0,0);
+  border-right: 16px solid #fd8d31;
+  position: absolute;
+  left:-32px;
+}
+.arrow:after{
+  width:0;
+  height:0;
+  content: '';
+  display:block;
+  border-top: 16px solid rgba(0,0,0,0);
+  border-bottom: 16px solid rgba(0,0,0,0);
+  border-left: 16px solid #fd8d31;
+  border-right: 16px solid rgba(0,0,0,0);
+  position: absolute;
+  right:-32px;
+  top: 0;
+}
+
 .badge {
   padding: 0.5em;
   border-radius: 0.25em;
@@ -134,7 +172,9 @@ blockquote {
 .remark-inline-code {
   background-color: #EEE;
 }
-
+.remark-code-line-highlighted {
+  background-color: #fcffd8;
+}
 
 /* Code samples */
 .hljs-keyword {

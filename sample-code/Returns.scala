@@ -1,4 +1,10 @@
 :paste
+/*
+Companion to JavaOne-2014: BOF-3024: Learning Scala: A Practical Approach
+
+Use this file by loading it from the Scala REPL:
+scala> :load Returns.scala
+*/
 class SumWithUnit {
   var sum = 0
   def add(b: Int): Unit ={

@@ -42,7 +42,7 @@ class: bigfont
 1. New Concepts
 1. Tools
 1. Tips .btw[or, how to learn Scala _and_ keep your job]
-  * Including a case study
+1. Case study
 
 .regularfont[
 Slides and code:
@@ -55,7 +55,7 @@ https://github.com/IQSS/javaone2014-bof3024F
 Here's the agenda for this talk.
 
 We will assume you have a working knowledge of java, and are interested in Scala but not sure how to start.
-We will presents lessons we learned, so you could hit new problems
+We will presents lessons we learned, so you could hit new problems. Many of the features we touch will not be covered to their full depth - we aim for a broad view of Scala, not a fully detailed one.
 
 ---
 
@@ -85,9 +85,7 @@ Intuitions created by years of working with Java can be misleading. You may end 
 
 It's a good thing, if you're ready for it.
 
-.bottom.right[
-So We've gathered a few examples.
-]
+.arrow[So We've gathered a few examples.]
 
 ???
 
@@ -150,10 +148,44 @@ val myString = "Hello!" //myString is a String
 ```
 
 ---
-# Constructors
+name: constructors
+# Constructors, Reconstructed
 
-* Primary Constructors
-* Auxiliary Constructors 
+Unlike Java, .emph[each class has a single primary constructor], defined together with the class:
+<pre><code class="scala hljs remark-code">class Bof( <span style="color:#88F">var title:String</span>,
+           <span style="color:#880">val num:Int</span>,
+           <span style="color:#F88">topic: String</span> ) {
+  def desc = title + ", a BOF about " + topic
+}
+</code></pre>
+* `var v:T` becomes a mutable field of the class
+* `val v:T` becomes a final field of the class
+* `v:T` is a value that can be used inside the class
+* The body of the primary constructor is all the code directly within the class.
+
+Alternative description (Odersky):
+> Classes have parameters, just like methods do.
+
+---
+# Auxiliary Constructors 
+It is also possible to define .emph[auxiliary constructors].
+
+Auxiliary Constructors:
+* Are called `this(...)`
+* Have to begin by calling the primary constructor, or another auxiliary constructor.
+  - Either way, that constructor is referred to as `this`.
+
+```scala
+class Bof( var title:String,
+           val num:Int,
+           topic: String ) {
+  def desc = title + ", a BOF about " + topic
+
+*  def this( title:String ) = {
+*    this( title, title.size, "the topic of '%s'".format(title))
+*  }
+}
+```
 
 ---
 # Method invocation
@@ -372,7 +404,7 @@ Scala introduces many concepts that are not present in Java. Often, when you loo
 
 This confused us too.
 
-.bottom.right[
+.arrow[
 So We've gathered a few examples.
 ]
 
@@ -539,20 +571,19 @@ layout: true
 * SBT
 
 ---
-class: bigfont
 # Tips
 
-* Spotting a good starter project
+### Spotting a good starter project
   * Look at activator templates
   * One-offs
   * Scripts
   
-Resources
+### Resources
+  * Books
+    - Scala for the impatient by Cay S. Horstmann <small>1 chapter per lunch, and you're done in 22 business days.</small>
   * Meetups
   * Typesafe web-casts
-  * Books
-    - Scala for the impatient // 1 chapter per lunch, and you're done in 22 business days.
-
+  * MOOCs
 ---
 
 # Don't Believe Everything You Hear About FP
@@ -572,7 +603,7 @@ Scala, a .emph[postfunctional] language, allows you to choose the approach you d
     * When you do use a tail recursion, don't forget `@tailrec`.
 
 
-.bottom.right[
+.arrow[
 Having said that...
 ]
 ???

@@ -3,14 +3,14 @@
 Companion to JavaOne-2014: BOF-3024: Learning Scala: A Practical Approach
 
 Use this file by loading it from the Scala REPL:
-scala> :load sample.scala
-Sample.html2(input)
+scala> :load Rewrite.scala
+RewriteSample.html2(input)
 */
 import scala.collection.mutable
 
 val input = Seq(" hello    ", " world     ", "* bullet1 ", "* bullet2", "* bullet3", "world", "hello")
 
-object Sample {
+object RewriteSample {
 
   def html1( rawStrings : Seq[String] ):String = {
     val cleaned = mutable.Buffer[String]()
