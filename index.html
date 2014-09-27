@@ -73,6 +73,7 @@ We will presents lessons we learned, so you could hit new problems. Many of the 
 * Everyone's favorite reasons:
   * Learn a new and interesting language
   * Bend your mind in new ways.
+  * Just because
 
 ---
 class: slide-emph-mid
@@ -126,6 +127,14 @@ Of course all expressions end with a semi-colon - doesn't mean you need to write
 ### []s, ()s and {}s
 `[]` are for type parameters, `&lt;&gt;` are for XML literals and operators, `()` and `{}` are interchangeable.
 
+.right[&rarr; Array access is done using `array(index)`, not `array[index]`!]
+
+???
+.emph[Array access]: This makes more sense, as arrays are really a function from indices to items. Recall that the `[]` operator was created for C's type of arrays, and the pointer arithmetic the used.
+
+---
+
+# Syntax
 ### Type name goes after the variable name
 .column.column-right[
 Scala:
@@ -138,11 +147,12 @@ Java:
 String myString;
 ```
 ]
-.column-clear[
+.column-clear.right[
 Personal goal: stop getting confused as early as Q3 of 2041.
 ]
 
-.emph[In many cases Scala can infer types on its own:]
+However, declaring a value's type is not always necessary - 
+.emph[in many cases Scala can infer types on its own:]
 ```scala
 val myString = "Hello!" //myString is a String
 ```
@@ -151,7 +161,7 @@ val myString = "Hello!" //myString is a String
 name: constructors
 # Constructors, Reconstructed
 
-Unlike Java, .emph[each class has a single primary constructor], defined together with the class:
+Unlike Java, .emph[each class has a single primary constructor], whose definition dovetails the class' definition:
 <pre><code class="scala hljs remark-code">class Bof( <span style="color:#88F">var title:String</span>,
            <span style="color:#880">val num:Int</span>,
            <span style="color:#F88">topic: String</span> ) {
@@ -550,6 +560,8 @@ Scala has many other new concept we can't cover here, but are worth looking into
 * Delimited Continuations
 * Macros
 * Rich type system
+* Currying
+* Working with functions
 * &hellip;
 
 ---
