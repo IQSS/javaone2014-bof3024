@@ -41,7 +41,7 @@ class: bigfont
 1. Colliding Concepts
 1. New Concepts
 1. Tools
-1. Tips (or, learn Scala while keeping your job)
+1. Tips .btw[or, how to learn Scala _and_ keep your job]
   * Including a case study
 
 .regularfont[
@@ -53,13 +53,6 @@ https://github.com/IQSS/javaone2014-bof3024F
 ???
 
 Here's the agenda for this talk.
-* Intro
- * Who we are; Who is in the audience. Expectations
-* Why Scala?
-* Colliding Concepts
-* New Concepts
-* Tools
-* Tips (or, learn Scala while keeping your job)
 
 We will assume you have a working knowledge of java, and are interested in Scala but not sure how to start.
 We will presents lessons we learned, so you could hit new problems
@@ -136,8 +129,6 @@ Of course all expressions end with a semi-colon - doesn't mean you need to write
 `[]` are for type parameters, `&lt;&gt;` are for XML literals and operators, `()` and `{}` are interchangeable.
 
 ### Type name goes after the variable name
-When needed - Often Scala can infer the type for you (yay!)
-
 .column.column-right[
 Scala:
 ```scala
@@ -153,6 +144,11 @@ String myString;
 Personal goal: stop getting confused as early as Q3 of 2041.
 ]
 
+.emph[In many cases Scala can infer types on its own:]
+```scala
+val myString = "Hello!" //myString is a String
+```
+
 ---
 # Constructors
 
@@ -164,20 +160,22 @@ Personal goal: stop getting confused as early as Q3 of 2041.
 
 * Methods that take no parameters may be invoked by just calling them - no need for `()` after the name.
 ```scala
-      scala> def f()={ println("hello") }
-      f: ()Unit
-      scala> f // prints "hello"
-      scala> f() // prints "hello"
-      scala> f _
-      res9: () => Unit = <function0>
+  scala> def f()={ println("hello") }
+  f: ()Unit
+  scala> f // prints "hello"
+  scala> f() // prints "hello"
+  scala> f _
+  res9: () => Unit = <function0>
 ```
 * Single parameter methods can be invoked using an alternative to the dot-notation:<br />
   `a + b` is the same as `a.+(b)`
 * Right associative methods: When last character of method name is `:` <br />
   `a +: b` is the same as `b.+:(a)`
-* The `apply()` method - no need to type the `apply` part.<br />
-  `f()` is really `f.apply` which is really `f.apply()`
-
+* The `apply()` method - creates a "default" method for objects - no need to type the `apply` part.<br />
+  `instance()` is really `instance.apply` which is really `instance.apply()`
+```scala
+scala> (f _)() // prints "hello"
+```
 ???
 
 * No-parameter functions may be invoked with no parens. 
@@ -187,7 +185,7 @@ Personal goal: stop getting confused as early as Q3 of 2041.
 ---
 # The Point of No `return`
 
-All methods return values - there's no `void` return type. Thus, the `return` keyword is often superfluous.
+All methods return values. .emph[Thus, the `return` keyword is often superfluous].
 
 In the absence of an explicit return keyword, a method will return the last value computed.
 
@@ -211,11 +209,12 @@ class SumWithInt {
 .bottom-remark[Code: Returns.scala at presentation repo]
 
 ---
-# `void` Left, Leaving a void
+# `Unit` filling the `void`
 
-All methods return values - there's no `void` return type. Thus, declaring a method to be `void` is impossible.
+All methods return values.
+.emph[Thus, declaring a method to be of a `void` type is impossible.]
 
-If a method has nothing to return, it should return the only value of type `Unit`, marked as `()`. 
+If a method has nothing to return, it should return the only value of type `Unit`, marked as `()`. This allows everything to be an .emph[expression] - Scala has no statements.
 
 These samples are functionally the same:
 
@@ -250,8 +249,9 @@ Unit is a type that only has a single value, `()`. Thus, there's no point lookin
 * Q: So what's the difference from return type `void`?
   * A: Returning a Unit makes it an expression rather than a statement. There are no statements in Scala - everything returns a value. That's FP.
 * Q (if time): What should be the return type of `System.exit`?
-  * A: Sound of a one hand clapping, I guess. It does not return.
+  * A: `void`, probably, it does not return.
 
+BTW, another casualty of the "everything is statement" is the trenary operator - no need for it, as `if` is an expression that returns a value
 ---
 
 .todo[Michael: Unsure where this goes]
@@ -506,6 +506,19 @@ implict parameters<br />
 	compiler will look for default values to supply with the function call
 
 implicit keyword
+
+---
+# Not Covered
+Scala has many other new concept we can't cover here, but are worth looking into:
+
+* `Option` type
+* `Either` type
+* Scoping of `private` field modifiers
+* Various `import` options
+* Delimited Continuations
+* Macros
+* Rich type system
+* &hellip;
 
 ---
 layout: true
