@@ -9,14 +9,6 @@ h1 {
   text-shadow: 0 2px 2px rgba(0,0,0,0.25);
 }
 
-.remark-code, .remark-inline-code { 
-  font-family: Menlo, Monaco, "Source code Pro", Courier, monospace;
-}
-
-.remark-inline-code {
-  background-color: #EEE;
-}
-
 blockquote {
     margin: 1em 0px;
     border-left: 1em #DDD solid;
@@ -40,6 +32,7 @@ blockquote {
 }
 .emph {
   color: #004080;
+  font-weight: bolder;
 }
 
 .modal{
@@ -87,6 +80,44 @@ blockquote {
   font-family: fantasy;
 }
 
+.arrow {
+  background-color: #fd8d31;
+  position: absolute;
+  height: 32px;
+  line-height: 32px;
+  text-align: right;
+  padding-right: 0.3em;
+  display: block;
+  width: 360px;
+  bottom: 2em;
+  right: 2em;
+}
+.arrow:before{
+  width:0;
+  height:0;
+  content: '';
+  display:block;
+  border-top: 16px solid #fd8d31;
+  border-bottom: 16px solid #fd8d31;
+  border-left: 16px solid rgba(0,0,0,0);
+  border-right: 16px solid #fd8d31;
+  position: absolute;
+  left:-32px;
+}
+.arrow:after{
+  width:0;
+  height:0;
+  content: '';
+  display:block;
+  border-top: 16px solid rgba(0,0,0,0);
+  border-bottom: 16px solid rgba(0,0,0,0);
+  border-left: 16px solid #fd8d31;
+  border-right: 16px solid rgba(0,0,0,0);
+  position: absolute;
+  right:-32px;
+  top: 0;
+}
+
 .badge {
   padding: 0.5em;
   border-radius: 0.25em;
@@ -120,6 +151,31 @@ blockquote {
   font-size: 4em;
 }
 
+.column {
+  width: 45%;
+  border: 1px solid white;
+}
+.column-right {
+  float: right;
+}
+.column-left {
+  float: left;
+}
+.column-clear {
+  clear: both;
+}
+/* Remark style overrides. */
+.remark-code, .remark-inline-code { 
+  font-family: Menlo, Monaco, "Source code Pro", Courier, monospace;
+}
+
+.remark-inline-code {
+  background-color: #EEE;
+}
+.remark-code-line-highlighted {
+  background-color: #fcffd8;
+}
+
 /* Code samples */
 .hljs-keyword {
   color: blue;
@@ -138,57 +194,4 @@ blockquote {
   box-shadow: 0 2px 4px rgba(0,0,0,.5);
   font-family: 'Architects Daughter';
 }
-
-/* from http://nicolasgallagher.com/pure-css-speech-bubbles/demo/ */
-.example-obtuse {
-  position:relative;
-  padding:15px 30px;
-  margin:0;
-  color:#000;
-  background:#f3961c; /* default background for browsers without gradient support */
-  /* css3 */
-  background:-webkit-gradient(linear, 0 0, 0 100%, from(#f9d835), to(#f3961c));
-  background:-moz-linear-gradient(#f9d835, #f3961c);
-  background:-o-linear-gradient(#f9d835, #f3961c);
-  background:linear-gradient(#f9d835, #f3961c);
-  /* Using longhand to avoid inconsistencies between Safari 4 and Chrome 4 */
-  -webkit-border-top-left-radius:25px 50px;
-  -webkit-border-top-right-radius:25px 50px;
-  -webkit-border-bottom-right-radius:25px 50px;
-  -webkit-border-bottom-left-radius:25px 50px;
-  -moz-border-radius:25px / 50px;
-  border-radius:25px / 50px;
-}
-
-/* display of quote author (alternatively use a class on the element following the blockquote) */
-.example-obtuse + p {margin:10px 150px 2em 0; text-align:right; font-style:italic;}
-
-/* creates the larger triangle */
-.example-obtuse:before {
-  content:"";
-  position:absolute;
-  bottom:-30px;
-  right:80px;
-  border-width:0 0 30px 50px;
-  border-style:solid;
-  border-color:transparent #f3961c;
-  /* reduce the damage in FF3.0 */
-  display:block;
-  width:0;
-}
-
-/* creates the smaller triangle */
-.example-obtuse:after {
-  content:"";
-  position:absolute;
-  bottom:-30px;
-  right:110px;
-  border-width:0 0 30px 20px;
-  border-style:solid;
-  border-color:transparent #fff;
-  /* reduce the damage in FF3.0 */
-  display:block;
-  width:0;
-}
-
 
