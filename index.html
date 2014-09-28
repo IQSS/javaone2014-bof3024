@@ -296,47 +296,76 @@ Unit is a type that only has a single value, `()`. Thus, there's no point lookin
 BTW, another casualty of the "everything is statement" is the trenary operator - no need for it, as `if` is an expression that returns a value
 
 ---
+# `class` vs. `object`
 
-# Companion objects vs. `static`
+Using the `object` keyword, programs can declare and construct an instance at design time. This is different from the `class` keyword, where instance construction is done at runtime, using the `new` keyword.
 
 ```scala
-object Frontend {
-  case object Ok
-  case object NotOk
-}
-
-class Frontend extends Actor with ActorLogging {
-  import Frontend._
-  import context.dispatcher
-  val mediator = DistributedPubSubExtension(context.system).mediator
-
-  def receive = {
-    case work:Work =>
-
-      implicit val timeout = Timeout(5.seconds)
-// ...
-  }
-
+object Counter {
+  var count = new java.util.concurrent.atomic.AtomicInteger(0)
+  def up() = count.addAndGet(1)
+  def down() = count.addAndGet(-1)
+  def value = count.get
 }
 ```
+```sh
+scala> Counter.up
+res5: Int = 1
+```
+* The created object is a singleton, initialized the first time its called.
+* Objects can extend classes, and traits, as usual.
+* The object's type is implicitly defined, but can be accessed (e.g. when creating DSLs).
 
 ---
-# Object Creation <sup>the sequel</sup>
-### `apply()` is the new `new`
-creating objects without calling new
+# Companion bjects replace `static`
+
+There is no `static` class members in Scala. Functionality that belongs to a class (rather than to its instances) goes in that class' .emph[Companion Object]. 
+
 
 ```scala
-class Fraction(n:Int, d: Int) {
-       ...
+class Burrito private( val filling:String ) { ... }
+
+object Burrito {
+  var count = new java.util.concurrent.atomic.AtomicInteger(0)
+  def makeWith( filling:String ) = {
+    count.incrementAndGet()
+    new Burrito(filling)
+  }
+  def brag() = "%,d burritos served".format(count.get)
 }
+```
+```sh
+scala> Burrito makeWith "beans"
+res22: Burrito = Burrito with beans
+...
+scala> Burrito.brag
+res14: String = 6 burritos served
+```
 
-object Fraction {
-   def apply(n: Int, d:Int) = new Fraction(n,d)
+???
+* Companion objects have to be defined with the class, in the same file.
+* More flexible than `static`, as they can extend other classes.
+
+
+---
+# `apply()` is the new `new`
+
+Define an `apply` method on a companion object, and you can skip `new`:
+
+```scala
+object Burrito {
+  var count = new java.util.concurrent.atomic.AtomicInteger(0)
+  def makeWith( filling:String ) = {
+    count.incrementAndGet()
+    new Burrito(filling)
+  }
+* def apply( filling:String ) = makeWith(filling)
+  ///...
 }
-
-
-val result = Fraction(3,4) * Fraction(2,5)
-
+```
+```sh
+scala> Burrito("Everything")
+res28: Burrito = Burrito with Everything
 ```
 
 ---
