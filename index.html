@@ -256,7 +256,7 @@ class SumWithInt {
 All methods return values.
 .emph[Thus, declaring a method to be of a `void` type is impossible.]
 
-If a method has nothing to return, it should return the only value of type `Unit`, marked as `()`. This allows everything to be an .emph[expression] - Scala has no statements.
+Method that has nothing to return, can return `Unit`, a type with a single value, marked as `()`. This allows everything to be an .emph[expression] - Scala has no statements.
 
 These samples are functionally the same:
 
@@ -294,27 +294,9 @@ Unit is a type that only has a single value, `()`. Thus, there's no point lookin
   * A: `void`, probably, it does not return.
 
 BTW, another casualty of the "everything is statement" is the trenary operator - no need for it, as `if` is an expression that returns a value
----
-
-.todo[Michael: Unsure where this goes]
-
-```scala
-def add(b: Byte): Unit ={
-   sum += b
-}
-def add(b: Byte) { sum += b }
-
-```
-
-```scala
-
-def checksum(): Int = {
-  return ~(sum &amp; 0xFF) +1
-}
-def checksum(): Int = ~(sum &amp; 0xFF) +1
-```
 
 ---
+
 # Companion objects vs. `static`
 
 ```scala
@@ -562,6 +544,7 @@ Scala has many other new concept we can't cover here, but are worth looking into
 * Rich type system
 * Currying
 * Working with functions
+* Advanced pattern matching
 * &hellip;
 
 ---
