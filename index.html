@@ -369,25 +369,18 @@ res28: Burrito = Burrito with Everything
 ```
 
 ---
-# Main
-no `static` &rarr; no `public static void main`. 
+# Starting Application
+No `static` &rarr; No `public static void main`.
 
-main method vs. Application traits
+Objects that extend the `Application` trait serve as application starting points.
 
 ```scala
+object MyApplication extends Application {
  def main(args: Array[String]): Unit = {
-// ...
+    // ...
   }
-
-```
-
-```scala
-object myApplication extends Application {
-
 }
-
 ```
-
 
 ---
 # What Do Mean By `List`?
