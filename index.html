@@ -559,14 +559,15 @@ toString, equals, hashcode and copy are generated unless explicitly provided
 
 #Implicits
 
+implicit keyword
+
 implict conversion<br />
-	integrating with other libraries
-	if compiler comes across a type error it will look for an appropriate conversion method
+	if compiler comes across a type error it will look for an appropriate conversion method<br/>
+	when you wish you could add a method to a class you didn't write
 
 implict parameters<br />
+	arguments to a method call can be left out<br/>
 	compiler will look for default values to supply with the function call
-
-implicit keyword
 
 ---
 # Not Covered
@@ -590,17 +591,40 @@ layout: true
 ---
 # Tools
 
-* scala REPL
+* scala REPL - play around with code
 	
 * IDEs
-  * NetBeans
-	* Intellij IDEA
-	* Eclipse
+  * NetBeans - Scala Plugin
+  * Intellij IDEA
+  * Eclipse
+	
   * Or, text editors such as SublimeText, Atom
 
 * ScalaDoc
-	
+
+---
+# Tools	
 * SBT
+
+```scala
+
+import com.github.retronym.SbtOneJar._
+
+
+name := "galileowrapper"
+
+version := "1.0"
+
+scalaVersion := "2.10.3"
+
+libraryDependencies ++= Seq(
+  "com.typesafe.akka" %% "akka-contrib" % "2.2.1",
+  ...
+  "edu.harvard.iq" % "consilience-core" % "1.0-SNAPSHOT",
+  "org.apache.hadoop" % "hadoop-core" % "0.20.204.0",
+  "junit" % "junit" % "4.4")
+
+```
 
 ---
 # Tips
