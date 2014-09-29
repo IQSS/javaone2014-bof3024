@@ -130,7 +130,11 @@ Semi-colons are optional at the end of a line containing an expression
 .right[&rarr; Array access is done using `array(index)`, not `array[index]`!]
 
 ???
-.emph[Array access]: This makes more sense, as arrays are really a function from indices to items. Recall that the `[]` operator was created for C's type of arrays, and the pointer arithmetic the used.
+* .emph[Array access]: This makes more sense, as
+  * arrays are really a function from indices to items
+  * this allows arrays to be a normal of collection
+
+* Recall that the `[]` operator was created for C's type of arrays, and the pointer arithmetic the used.
 
 ---
 
@@ -162,7 +166,7 @@ name: constructors
 # Constructors, Reconstructed
 
 Unlike Java, .emph[each class has a single primary constructor], whose definition dovetails the class' definition:
-<pre><code class="scala hljs remark-code">class Bof( <span style="color:#88F">var title:String</span>,
+<pre><code class="scala hljs remark-code">class BOF( <span style="color:#88F">var title:String</span>,
            <span style="color:#880">val num:Int</span>,
            <span style="color:#F88">topic: String</span> ) {
   def desc = title + ", a BOF about " + topic
