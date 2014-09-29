@@ -471,89 +471,73 @@ trait Fudge {
 }
 
 trait Sprinkles
+trait Peanuts
 
 class Food
 class IceCream extends Food
 
 class TraitTest {
-  var desert = new IceCream with Fudge with Sprinkles
+  var desert = new IceCream with Fudge with Sprinkles with Peanuts
 }
 ```
 
 ???
-I normally tell my kids that Ice Cream is not a food, but...
+* I normally tell my kids that Ice Cream is not a food, but...
+* quasi multiple inheritance
+* Type definition on the site of var declaration, not before.
 
 ---
-#Tuples
+# Case Classes
+A class that's specialized for storing compound immutable values. By deciding to use a case class rather than a normal class, you get:
+* Automatic, proper `toString`, `equals`, `hashCode`, getters.
+* `copy` method to create new objects based on existing ones.
+* Companion object, complete with `apply` and `unapply` methods
 
 ```scala
-( 3, "Boston",199.5)
-//Tuple3(Int, java.lang.String, Double)
-rank=t._1,word=t._2 Score=t._3
+abstract class Session
+
+case class BOF(num:Int, title:String) extends Session
+case class Tutorial(num:Int, technology:String) extends Session
+case class Keynote( title:String, speaker:String ) extends Session
+case class JUG( groupName: String ) extends Session
 ```
- 
- Simple way to return multiple values from a method, where semantic meaning is not 
- important enough to pre-define a class to return the values
-Don't overuse, remember objects are really annotated tuples (what's the semantics of the `String` value at `t._2`?)
-
-* Tuple22 is largest size
-* 1-based index as in Haskell
-
----
-# case classes
-Pattern matching
-
-```scala
-object MasterWorkerProtocol {
-  // Messages from Workers
-  case class RegisterWorker(workerId: String)
-  case class WorkerRequestsWork(workerId: String)
-  case class WorkIsDone(workerId: String, workId: String, result: Any)
-  case class WorkFailed(workerId: String, workId: String)
-
-  // Messages to Workers
-  case object WorkIsReady
-  case class Ack(id: String)
-}
+```sh
+scala> val jos = BOF(3024,"Learning Scala the Practical Way")
+jos: BOF = BOF(3024,Learning Scala the Practical Way)
+scala> val jos2 = jos.copy( num = 1024 )
+jos2: BOF = BOF(1024,Learning Scala the Practical Way)
 ```
 
-automatic on declaration:
-constructor parameters are vals unless explicitly declared var (no setters)
-apply method is provided
-unapply method is provided
-toString, equals, hashcode and copy are generated unless explicitly provided
 
 ---
 
-#case classes
+#Pattern Matching
 
 ```scala
-
-  def receive = {
-    case RegisterWorker(workerId) =>
-      if (workers.contains(workerId)) {
-        workers += (workerId -> workers(workerId).copy(ref = sender))
-      } else {
-        log.debug("Worker registered: {}", workerId)
-        workers += (workerId -> WorkerState(sender, status = Idle))
-        if (pendingWork.nonEmpty)
-          sender ! WorkIsReady
-      }
-    case WorkerRequestsWork(workerId) =>
-      if (pendingWork.nonEmpty) {
-        workers.get(workerId) match {
-// ...
-            sender ! work
-        }
-      }
-    case WorkIsDone(workerId, workId, result) =>
-      workers.get(workerId) match {
-// ... 
-          sender ! MasterWorkerProtocol.Ack(workId)
-      }
-
+object SessionPrinter {
+  def print(s:Session)={
+    s match {
+      case BOF(n,t) => "%d: BOF %s".format(n,t)
+      case Tutorial(n,t) => "Learn about %s! (%d)".format(t,n)
+      case JUG(g) => "Meet with friends from %s".format(g)
+      case _ => s.toString
+}}}
+```
+```sh
+scala> val mySched = Seq( BOF(1,"Learn Scala"), Tutorial(40,"NetBeans"), JUG("jArgentina JUG") )
+scala> mySched.map( SessionPrinter.print(_) ).foreach( println(_) )
+1: BOF Learn Scala
+Learn about NetBeans! (40)
+Meet with friends from jArgentina JUG
 
 ```
+
+Pattern matching is a very versatile control structure, whose full options are beyond the scope of this talk. In short, it the mother of all `switch` statements. And then some.
+
+???
+* Downcasting is unthinkable in java ("Chuck Norris kills a kitten")
+* Single syntactical maneuver to downcast and extract values
+* Can use also the values of the objects, and not only over case classes.
 
 ---
 
@@ -561,11 +545,11 @@ toString, equals, hashcode and copy are generated unless explicitly provided
 
 implicit keyword
 
-implict conversion<br />
+implicit conversion<br />
 	if compiler comes across a type error it will look for an appropriate conversion method<br/>
 	when you wish you could add a method to a class you didn't write
 
-implict parameters<br />
+implicit parameters<br />
 	arguments to a method call can be left out<br/>
 	compiler will look for default values to supply with the function call
 
@@ -583,6 +567,7 @@ Scala has many other new concept we can't cover here, but are worth looking into
 * Currying
 * Working with functions
 * Advanced pattern matching
+* Tuples
 * &hellip;
 
 ---
@@ -625,6 +610,11 @@ libraryDependencies ++= Seq(
   "junit" % "junit" % "4.4")
 
 ```
+---
+layout:true
+.slide-badge.badge.badge-3[
+  Tips
+]
 
 ---
 # Tips

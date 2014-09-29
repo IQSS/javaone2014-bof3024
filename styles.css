@@ -129,6 +129,9 @@ blockquote {
 .badge-2{
   background-color: #00ff80;
 }
+.badge-3{
+  background-color: #f5b5ff;
+}
 
 .slide-badge {
   position: absolute;
