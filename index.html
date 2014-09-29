@@ -372,17 +372,20 @@ res28: Burrito = Burrito with Everything
 # Starting an Application
 No `static` &rarr; No `public static void main`.
 
-Objects that extend the `Application` trait serve as application starting points.
+.emph[Implementing the `App` trait ] turns `object`s into executable applications. It uses the body of the object as a main method.
 
 ```scala
-object MyApplication extends Application {
- def main(args: Array[String]): Unit = {
-    // ...
-  }
+object MyApplication extends App {
+  if (args.contains("-h")) printHelpAndQuit();
+  // rest of code goes here
 }
 ```
-
+* To access the argument list, use `args`.
+* There is a `main` method - normally, it does not need to be explicitly overridden.
+* The object's fields will not be initialized when the object's body is executed.
+* Trait `Application` is deprecated as of version 2.9.0
 ---
+
 # What Do Mean By `List`?
 
 ## Java's `List`
@@ -396,18 +399,28 @@ The classic linked list from CS 101 / intro to functional programming (with some
 <br />
 .center.emph[When you want a Java type of `List`, use Scala's `Seq` or `Buffer`]
 
+.arrow[
+  ...and speaking about collections
+]
+
+???
+I'd like to get back endless hours lost over this confusion
+
 ---
 layout: true
 
 ---
 # Collection Library
-Java had minimal api (until 8), scala has maximal api <br />
-immutable vs mutable, same name different package
-if the package is not imported or the full name is not used, default is immutable version
 
-Reference the official intro at http://docs.scala-lang.org/overviews/collections/introduction.html
+Scala's collection library is very different from Java's. Scala approach to collections is different. 
+* Most collections have a mutable and immutable version. Same name, different package.
+  * If the package is not imported or the full name is not used, default is immutable version
+* Java collections have minimal API, whereas Scala's collections has large API
+  * `java.util.List` doesn't have a `last()` method, as it can be implemented by `size()` and `get()`
 
-* I tried not reading it and reading it. Reading it is better.
+This may be one of the areas where it's simpler to read the official intro rather than learn as you go.
+
+http://docs.scala-lang.org/overviews/collections/introduction.html
 
 ---
 class: slide-emph-mid
