@@ -384,27 +384,6 @@ object MyApplication extends App {
 * There is a `main` method - normally, it does not need to be explicitly overridden.
 * The object's fields will not be initialized when the object's body is executed.
 * Trait `Application` is deprecated as of version 2.9.0
----
-
-# What Do Mean By `List`?
-
-## Java's `List`
-Ordered collection of elements. 
-
-## Scala's `List`
-The classic linked list from CS 101 / intro to functional programming (with some extras thrown in, and without the annoying TA).
-
-<br />
-<br />
-<br />
-.center.emph[When you want a Java type of `List`, use Scala's `Seq` or `Buffer`]
-
-.arrow[
-  ...and speaking about collections
-]
-
-???
-I'd like to get back endless hours lost over this confusion
 
 ---
 layout: true
@@ -421,6 +400,24 @@ Scala's collection library is very different from Java's. Scala approach to coll
 This may be one of the areas where it's simpler to read the official intro rather than learn as you go.
 
 http://docs.scala-lang.org/overviews/collections/introduction.html
+
+---
+
+# What Do Mean By `List`?
+
+## Java's `List`
+Ordered collection of elements. 
+
+## Scala's `List`
+The classic linked list from CS 101 / intro to functional programming (with some extras thrown in, and without the annoying TA).
+
+<br />
+<br />
+<br />
+.center.emph[When you want a Java type of `List`, use Scala's `Seq` or `Buffer`]
+
+???
+I'd like to get back endless hours lost over this confusion
 
 ---
 class: slide-emph-mid
@@ -445,42 +442,47 @@ layout: true
 ---
 # `val` vs. `var`
 
-* val - immutable value
-* var - mutable value
+* `val` - immutable value
+* `var` - variable (mutable value)
+* `def` - defines methods, but can also be used to define immutable values.
+* Immutability bias - when possible, use immutable values and data structures.
 
-* immutability bias
+
 ```scala
   val workerId = UUID.randomUUID().toString
   var currentWorkId: Option[String] = None
 ```
 
 ---
-#Traits vs interfaces
+# Traits, not Interfaces
 
-Traits define signatures of supported methods, like Java interfaces, but can also provide
-default interfaces. 
+Traits define signatures of supported methods, like Java interfaces, but can also provide method implementations and fields. 
 
-Mixin-  extends keyword
 ```scala
-trait Startup {
+trait Foo {
+  def bar( b:Baz )
+}
+```
+They can also be "mixed in" to create quasi-multiple inheritance
 
-  def startBackend(joinAddressOption: Option[Address], role: String): Address = {
-//...
-    joinAddress
-  }
-```  
 ```scala
-
-object Main extends Startup {
-// ...
+trait Fudge {
+  def drip(s:Shirt) = {...}
 }
 
+trait Sprinkles
 
-```  
-```scala
-class Master(workTimeout: FiniteDuration) extends Actor with ActorLogging {
+class Food
+class IceCream extends Food
 
+class TraitTest {
+  var desert = new IceCream with Fudge with Sprinkles
+}
 ```
+
+???
+I normally tell my kids that Ice Cream is not a food, but...
+
 ---
 #Tuples
 
@@ -872,7 +874,7 @@ layout: true
 
 
 * IQSS
-  * .emph[BOF5619 - Lean Beans (Are Made of This):Command Pattern Versus MVC]<br/>
+  * .emph[BOF5619 - Lean Beans (Are Made of This): Command Pattern Versus MVC]<br/>
   * .emph[BOF5475 When The PrimeFaces Bootstrap Theme Isn’t Enough]<br/>
     Tuesday, Sep 30, 9:00 PM - 9:45 PM - Hilton - Plaza A
   * .emph[CON5575 Bean Validation: Practical Examples from a Real World Java EE7 Application]<br />
