@@ -29,7 +29,7 @@ Hello! Thanks for coming. Let's get going.
 
 This is Birds Of A Feather 3024, "Learning Scala: A Practical Approach ."
 
-We are Michael Bar-Sinai and Bob Treacy, developers at the Institute for Quantitative Social Science at Harvard University.
+We are Michael Bar-Sinai and Bob Treacy, developers at the Institute for Quantitative Social Science at Harvard University. We work on research tools, mainly for social scientists, but we branch out to astronomy, health, etc.
 
 ---
 
@@ -56,6 +56,13 @@ Here's the agenda for this talk.
 
 We will assume you have a working knowledge of java, and are interested in Scala but not sure how to start.
 We will presents lessons we learned, so you could hit new problems. Many of the features we touch will not be covered to their full depth - we aim for a broad view of Scala, not a fully detailed one.
+
+
+* Many languages are easily picked up as-you-go, and the learning curve is not that steep if you already know programming. 
+* Scala is not this type of language:
+  * New concepts (not just lambdas)
+  * Confusing meanings, coming from Java
+  * Not internet-culture friendly - you can't grab source snippets off of the web adn expect them to "just work"
 
 ---
 
@@ -180,6 +187,10 @@ Unlike Java, .emph[each class has a single primary constructor], whose definitio
 Alternative description (Odersky):
 > Classes have parameters, just like methods do.
 
+???
+
+"bend your mind in new ways" - classes have params, not constructors.
+
 ---
 # Auxiliary Constructors 
 It is also possible to define .emph[auxiliary constructors].
@@ -227,6 +238,8 @@ scala> (f _)() // prints "hello"
 * No-parameter functions may be invoked with no parens. 
 * Reference the function itself via `f _`
 * This allows better abstractions than getters, as the client code can't tell if they're calling a function or accessing a parameter.
+* By convention, add `()` when this is a mutating call
+* `()` is a C operator on function pointers, not really needed now since method invocation is cheap.
 
 ---
 # The Point of No `return`
@@ -290,6 +303,8 @@ Ways of returning unit:
 * No `=`
 * Explicitly
 * Declare method to be of type unit
+
+Caution: forgetting the `=` in a non-unit method declaration turns it into one.
 
 Unit is a type that only has a single value, `()`. Thus, there's no point looking into what that value is (unlike instances of `Int`). 
 * Q: So what's the difference from return type `void`?
@@ -632,7 +647,9 @@ layout:true
   * Books
     - Scala for the impatient by Cay S. Horstmann <small>1 chapter per lunch, and you're done in 22 business days.</small>
   * Meetups
-  * Typesafe web-casts
+  * Typesafe
+    * Webcasts, Newsletters
+    * DZone Refcard (Scala + Akka)
   * MOOCs
 ---
 
